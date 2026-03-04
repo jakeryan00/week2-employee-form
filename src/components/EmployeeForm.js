@@ -16,19 +16,32 @@ class EmployeeForm extends React.Component {
     this.setState({ [name]: value });
   };
 
-  handleSubmit = (event) => {
-    event.preventDefault();
+ handleSubmit = (event) => {
+  event.preventDefault();
 
-    console.log("New Employee Submitted:", this.state);
-
-    this.setState({
-      name: "",
-      email: "",
-      title: "",
-      department: "",
-    });
+  const employee = {
+    employeeId: Math.floor(Math.random() * 10000),
+    name: this.state.name,
+    email: this.state.email,
+    title: this.state.title,
+    department: this.state.department,
   };
 
+  console.log("New Employee Submitted:", employee);
+
+  // Send employee to App.js
+  if (this.props.onSubmit) {
+    this.props.onSubmit(employee);
+  }
+
+  // Clear the form
+  this.setState({
+    name: "",
+    email: "",
+    title: "",
+    department: "",
+  });
+};
   render() {
     return (
       <div className="employee-form-container">
