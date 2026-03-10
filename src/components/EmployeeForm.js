@@ -1,5 +1,6 @@
 import React from "react";
 import "../EmployeeForm.css";
+
 class EmployeeForm extends React.Component {
   constructor(props) {
     super(props);
@@ -16,32 +17,29 @@ class EmployeeForm extends React.Component {
     this.setState({ [name]: value });
   };
 
- handleSubmit = (event) => {
-  event.preventDefault();
+  handleSubmit = (event) => {
+    event.preventDefault();
 
-  const employee = {
-    employeeId: Math.floor(Math.random() * 10000),
-    name: this.state.name,
-    email: this.state.email,
-    title: this.state.title,
-    department: this.state.department,
+    const employee = {
+      employeeId: Date.now(),
+      name: this.state.name,
+      email: this.state.email,
+      title: this.state.title,
+      department: this.state.department,
+    };
+
+    if (this.props.onSubmit) {
+      this.props.onSubmit(employee);
+    }
+
+    this.setState({
+      name: "",
+      email: "",
+      title: "",
+      department: "",
+    });
   };
 
-  console.log("New Employee Submitted:", employee);
-
-  // Send employee to App.js
-  if (this.props.onSubmit) {
-    this.props.onSubmit(employee);
-  }
-
-  // Clear the form
-  this.setState({
-    name: "",
-    email: "",
-    title: "",
-    department: "",
-  });
-};
   render() {
     return (
       <div className="employee-form-container">
