@@ -1,36 +1,38 @@
 import React from "react";
 
-function EmployeeList({ employees }) {
-  return (
-    <div>
-      <h2>Employee List</h2>
+function EmployeeList({ employees, onDeleteEmployee }) {
+  if (employees.length === 0) {
+    return <p className="empty-message">No employees added yet.</p>;
+  }
 
-      {employees.length === 0 ? (
-        <p>No employees added yet.</p>
-      ) : (
-        <table border="1" cellPadding="8">
-          <thead>
-            <tr>
-              <th>Employee ID</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Job Title</th>
-              <th>Department</th>
-            </tr>
-          </thead>
-          <tbody>
-            {employees.map((employee) => (
-              <tr key={employee.employeeId}>
-                <td>{employee.employeeId}</td>
-                <td>{employee.name}</td>
-                <td>{employee.email}</td>
-                <td>{employee.title}</td>
-                <td>{employee.department}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+  return (
+    <div className="employee-list">
+      {employees.map((employee) => (
+        <div className="employee-card" key={employee.id}>
+          <h3>
+            {employee.firstName} {employee.lastName}
+          </h3>
+
+          <p>
+            <strong>Email:</strong> {employee.email}
+          </p>
+
+          <p>
+            <strong>Department:</strong> {employee.department}
+          </p>
+
+          <p>
+            <strong>Position:</strong> {employee.position}
+          </p>
+
+          <button
+            className="delete-btn"
+            onClick={() => onDeleteEmployee(employee.id)}
+          >
+            Delete
+          </button>
+        </div>
+      ))}
     </div>
   );
 }

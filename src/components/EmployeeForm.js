@@ -1,114 +1,119 @@
-import React from "react";
-import "../EmployeeForm.css";
+import React, { useState } from "react";
 
-class EmployeeForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: "",
-      email: "",
-      title: "",
-      department: "",
-    };
-  }
+function EmployeeForm({ onAddEmployee }) {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    department: "",
+    position: "",
+  });
 
-  handleChange = (event) => {
+  const handleChange = (event) => {
     const { name, value } = event.target;
-    this.setState({ [name]: value });
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
-  handleSubmit = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
-    const employee = {
-      employeeId: Date.now(),
-      name: this.state.name,
-      email: this.state.email,
-      title: this.state.title,
-      department: this.state.department,
-    };
-
-    if (this.props.onSubmit) {
-      this.props.onSubmit(employee);
+    if (
+      !formData.firstName ||
+      !formData.lastName ||
+      !formData.email ||
+      !formData.department ||
+      !formData.position
+    ) {
+      alert("Please complete all fields.");
+      return;
     }
 
-    this.setState({
-      name: "",
+    onAddEmployee(formData);
+
+    setFormData({
+      firstName: "",
+      lastName: "",
       email: "",
-      title: "",
       department: "",
+      position: "",
     });
   };
 
-  render() {
-    return (
-      <div className="employee-form-container">
-        <h2 className="employee-form-title">New Employee Form</h2>
-
-        <form className="employee-form" onSubmit={this.handleSubmit}>
-          <label className="employee-form-label" htmlFor="name">
-            Name
-          </label>
+  return (
+    <form className="employee-form" onSubmit={handleSubmit}>
+      <div className="form-row">
+        <div className="form-group">
+          <label htmlFor="firstName">First Name</label>
           <input
-            className="employee-form-input"
-            id="name"
             type="text"
-            name="name"
-            value={this.state.name}
-            onChange={this.handleChange}
-            placeholder="Enter employee name"
-            required
+            id="firstName"
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleChange}
+            placeholder="Enter first name"
           />
+        </div>
 
-          <label className="employee-form-label" htmlFor="email">
-            Email
-          </label>
+        <div className="form-group">
+          <label htmlFor="lastName">Last Name</label>
           <input
-            className="employee-form-input"
-            id="email"
-            type="email"
-            name="email"
-            value={this.state.email}
-            onChange={this.handleChange}
-            placeholder="Enter employee email"
-            required
-          />
-
-          <label className="employee-form-label" htmlFor="title">
-            Job Title
-          </label>
-          <input
-            className="employee-form-input"
-            id="title"
             type="text"
-            name="title"
-            value={this.state.title}
-            onChange={this.handleChange}
-            placeholder="Enter job title"
-            required
+            id="lastName"
+            name="lastName"
+            value={formData.lastName}
+            onChange={handleChange}
+            placeholder="Enter last name"
           />
-
-          <label className="employee-form-label" htmlFor="department">
-            Department
-          </label>
-          <input
-            className="employee-form-input"
-            id="department"
-            type="text"
-            name="department"
-            value={this.state.department}
-            onChange={this.handleChange}
-            placeholder="Enter department"
-            required
-          />
-
-          <button className="employee-form-button" type="submit">
-            Submit
-          </button>
-        </form>
+        </div>
       </div>
-    );
-  }
+
+      <div className="form-group">
+        <label htmlFor="email">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="Enter email address"
+        />
+      </div>
+
+      <div className="form-row">
+        <div className="form-group">
+          <label htmlFor="department">Department</label>
+          <input
+            type="text"
+            id="department"
+            name="department"
+            value={formData.department}
+            onChange={handleChange}
+            placeholder="Enter department"
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="position">Position</label>
+          <input
+            type="text"
+            id="position"
+            name="position"
+            value={formData.position}
+            onChange={handleChange}
+            placeholder="Enter position"
+          />
+        </div>
+      </div>
+
+      <button type="submit" className="submit-btn">
+        Add Employee
+      </button>
+    </form>
+  );
 }
 
 export default EmployeeForm;
